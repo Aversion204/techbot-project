@@ -52,11 +52,22 @@ print(result['accuracy'])
 
 result = list(linear_est.predict(test_input_fn))
 
-print(dftest.loc[124]) 
+print(dftest.loc[1]) 
 
-if result[124]['probabilities'][1] >= 0.5:
+if result[1]['probabilities'][1] >= 0.5:
     print("That person has a High chance of infertility.")
 else:
     print("That person has a Low chance of infertfility.")
 
 
+def input_fn(features, batch_size=256): 
+#Convert the inputs to a dataset without labels - we don't know the labels, the model should give us the answer
+    return tf.data.Dataset.from_tensor_slices(dict(features)).batch(batch_size)
+
+OUTPUTS = ['0', '1']
+features = ['SmokingStatus', 'Gender', 'Age', 'Weight']
+predict = {} #dict
+
+print("Please type your information as follows.")
+for feature in features:
+    val = input(feature + ": ")
